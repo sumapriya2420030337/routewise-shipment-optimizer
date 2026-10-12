@@ -17,6 +17,7 @@ frontend/node_modules/
 frontend/dist/
 frontend/.vite/
 *.log
+docs/technical-report-verified.pdf
 
 Thumbs.db
 .DS_Store
