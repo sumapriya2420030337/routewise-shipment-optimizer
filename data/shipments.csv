@@ -1,31 +1,31 @@
 shipment_id,origin,destination,cargo_type,weight_kg,distance_km,max_cost_usd,max_transit_days,max_delay_probability,max_congestion_risk,max_geopolitical_risk,scenario_class
-S001,"Hamburg, DE","Sao Paulo, BR",food,19599.25,11169.5,232237.27,68.97,0.7657,0.5828,0.6964,feasible
-S002,"Tokyo, JP","Mumbai, IN",electronics,14344.54,11556.1,119785.25,68.12,0.6269,0.7331,0.863,feasible
-S003,"Sydney, AU","Mumbai, IN",electronics,14423.43,1834.7,18882.93,12.06,0.9525,0.9267,0.767,feasible
-S004,"Toronto, CA","Rotterdam, NL",food,18978.2,6966.5,140533.41,24.17,0.7682,0.7365,0.6947,feasible
-S005,"Shanghai, CN","Sydney, AU",medical_supplies,1619.24,3832.7,655.22,1.79,0.1993,0.2841,0.1747,infeasible
-S006,"Hamburg, DE","Sydney, AU",electronics,15037.36,8838.9,121989.93,42.08,0.8315,0.607,0.8861,feasible
-S007,"Mumbai, IN","Sao Paulo, BR",medical_supplies,15606.15,7385.2,16251.16,2.85,0.3274,0.1448,0.1147,infeasible
-S008,"New York, US","Mumbai, IN",textiles,19942.87,2155.0,2303.2,1.11,0.2068,0.2291,0.342,infeasible
-S009,"Sao Paulo, BR","Hamburg, DE",electronics,808.28,10427.0,1771.37,3.46,0.1522,0.2061,0.2729,infeasible
-S010,"Shanghai, CN","Vancouver, CA",machinery,9722.89,312.4,2854.72,5.77,0.7698,0.7256,0.5661,feasible
-S011,"Toronto, CA","Hamburg, DE",food,13370.67,8526.5,118947.25,48.95,0.5767,0.6801,0.7788,feasible
-S012,"Rotterdam, NL","Vancouver, CA",machinery,6533.79,6198.7,31861.01,38.08,0.854,0.9186,0.7233,feasible
-S013,"Toronto, CA","Mexico City, MX",medical_supplies,5904.71,5632.3,27800.53,17.74,0.8509,0.8399,0.6948,feasible
-S014,"Rotterdam, NL","Tokyo, JP",textiles,9441.86,8040.9,59469.28,31.83,0.7515,0.76,0.6906,feasible
-S015,"Dubai, AE","Rotterdam, NL",food,6392.81,4240.4,1757.56,3.97,0.309,0.1023,0.1272,infeasible
-S016,"Mexico City, MX","Mumbai, IN",textiles,2922.36,9618.5,31592.58,45.77,0.8868,0.9221,0.6706,feasible
-S017,"Sydney, AU","Los Angeles, US",food,1210.48,4398.1,7102.56,25.01,0.8931,0.6914,0.5621,feasible
-S018,"Mexico City, MX","New York, US",food,15876.96,6825.8,20915.19,2.37,0.2326,0.2279,0.3292,infeasible
-S019,"Toronto, CA","London, GB",electronics,1882.58,6533.5,9882.5,41.38,0.8646,0.5806,0.8088,feasible
-S020,"Tokyo, JP","Singapore, SG",food,2848.75,3082.2,8630.65,14.13,0.7313,0.8662,0.5613,feasible
-S021,"Toronto, CA","Tokyo, JP",electronics,8975.55,8087.4,57483.56,47.78,0.9538,0.7508,0.9582,feasible
-S022,"Los Angeles, US","London, GB",textiles,7747.45,1300.1,1547.88,1.54,0.1211,0.2178,0.2015,infeasible
-S023,"Dubai, AE","Hamburg, DE",textiles,18854.83,1227.9,23319.41,6.99,0.656,0.5997,0.9274,feasible
-S024,"Los Angeles, US","Rotterdam, NL",medical_supplies,11765.87,1380.7,18203.63,9.38,0.5787,0.7156,0.6677,feasible
-S025,"Istanbul, TR","Tokyo, JP",electronics,10881.43,11656.7,18768.58,2.04,0.3267,0.1228,0.2026,infeasible
-S026,"Mumbai, IN","Shanghai, CN",textiles,19800.34,9077.0,21433.49,1.04,0.2077,0.1662,0.3177,infeasible
-S027,"Rotterdam, NL","Sao Paulo, BR",electronics,6246.58,290.4,438.43,3.29,0.2477,0.1883,0.1742,infeasible
-S028,"New York, US","London, GB",electronics,3669.03,7773.5,21548.78,37.01,0.6542,0.5969,0.959,feasible
-S029,"Tokyo, JP","Mexico City, MX",food,8297.51,10264.4,62326.95,53.36,0.8748,0.8039,0.6201,feasible
-S030,"Singapore, SG","Sao Paulo, BR",electronics,338.25,4435.6,2816.77,26.63,0.8786,0.5543,0.7277,feasible
+S001,"Hamburg, DE","Sao Paulo, BR",food,19599.25,11169.5,275646.04,68.97,0.7657,0.5828,0.6964,feasible
+S002,"Dubai, AE","Sao Paulo, BR",electronics,6980.88,7377.6,65677.24,43.95,0.9024,0.5658,0.7607,feasible
+S003,"Istanbul, TR","London, GB",food,14782.25,10462.2,106819.11,62.43,0.8557,0.74,0.7039,feasible
+S004,"Singapore, SG","Sao Paulo, BR",electronics,338.25,4435.6,2816.77,26.63,0.8786,0.5543,0.7277,feasible
+S005,"Los Angeles, US","Singapore, SG",medical_supplies,15419.84,3623.1,10402.29,2.67,0.3004,0.1824,0.3292,infeasible
+S006,"Mexico City, MX","Singapore, SG",food,66.69,9394.6,2407.55,30.38,0.6305,0.9642,0.9116,feasible
+S007,"Shanghai, CN","Los Angeles, US",machinery,6788.42,3363.2,1635.66,1.61,0.1897,0.2863,0.2519,infeasible
+S008,"New York, US","Tokyo, JP",medical_supplies,4918.98,2347.9,1044.96,2.62,0.2958,0.3255,0.2979,infeasible
+S009,"Rotterdam, NL","Istanbul, TR",food,8643.48,9719.9,3273.36,2.88,0.3157,0.1729,0.1497,infeasible
+S010,"Mexico City, MX","Los Angeles, US",medical_supplies,14054.06,8877.9,133510.05,33.46,0.6619,0.577,0.7508,feasible
+S011,"Istanbul, TR","Rotterdam, NL",food,12864.6,7349.1,92305.75,32.52,0.8194,0.9206,0.5771,feasible
+S012,"Mumbai, IN","Vancouver, CA",medical_supplies,12335.36,908.3,8779.48,7.2,0.952,0.7632,0.7654,feasible
+S013,"New York, US","Los Angeles, US",machinery,9194.31,3403.9,28365.2,13.4,0.6694,0.6003,0.5503,feasible
+S014,"New York, US","Mumbai, IN",machinery,7601.55,4543.3,38626.58,29.09,0.8647,0.8827,0.8747,feasible
+S015,"Sydney, AU","Singapore, SG",electronics,7265.38,5069.7,5595.78,1.47,0.2446,0.2435,0.2122,infeasible
+S016,"London, GB","Dubai, AE",textiles,17774.54,6775.5,115971.36,35.3,0.5804,0.5548,0.8687,feasible
+S017,"Mexico City, MX","Tokyo, JP",electronics,18720.49,2429.5,57307.01,14.34,0.6039,0.9732,0.9034,feasible
+S018,"Sao Paulo, BR","New York, US",textiles,13252.41,9450.6,4699.26,2.66,0.2016,0.1985,0.1514,infeasible
+S019,"Hamburg, DE","Mumbai, IN",textiles,6481.66,1812.8,14654.49,10.43,0.5607,0.6605,0.6498,feasible
+S020,"Rotterdam, NL","Tokyo, JP",food,6536.59,2431.4,14315.71,13.53,0.6349,0.5642,0.5689,feasible
+S021,"Toronto, CA","Los Angeles, US",medical_supplies,2732.9,2595.1,4637.21,18.58,0.6362,0.7351,0.8906,feasible
+S022,"Tokyo, JP","London, GB",medical_supplies,16177.79,436.7,1491.5,3.7,0.0748,0.3351,0.065,infeasible
+S023,"Dubai, AE","Shanghai, CN",medical_supplies,473.83,8150.1,5947.49,25.78,0.7219,0.7418,0.5775,feasible
+S024,"London, GB","Toronto, CA",machinery,17109.58,1881.6,25001.38,8.69,0.5698,0.7947,0.8712,feasible
+S025,"Mexico City, MX","Los Angeles, US",medical_supplies,18298.51,3905.6,11220.69,2.15,0.0798,0.0881,0.224,infeasible
+S026,"Toronto, CA","Sao Paulo, BR",electronics,13804.94,6091.2,14819.42,3.66,0.0539,0.1857,0.3195,infeasible
+S027,"Istanbul, TR","Sydney, AU",machinery,17473.49,910.7,1555.0,2.71,0.1236,0.0764,0.1066,infeasible
+S028,"New York, US","Tokyo, JP",medical_supplies,7639.86,4866.1,44203.43,19.1,0.8985,0.8092,0.955,feasible
+S029,"Mexico City, MX","New York, US",textiles,14475.06,6111.2,75745.75,39.49,0.845,0.6874,0.7583,feasible
+S030,"Los Angeles, US","Hamburg, DE",machinery,14417.92,11404.2,136570.14,60.18,0.9077,0.6517,0.7129,feasible

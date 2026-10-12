@@ -702,8 +702,7 @@ function App() {
   const syncActiveSection = useCallback(() => {
     const main = mainContentRef.current
     if (!main || navigationLockRef.current) return
-    const mainRect = main.getBoundingClientRect()
-    const activationLine = mainRect.top + Math.max(96, Math.min(160, main.clientHeight * 0.2))
+    const activationLine = Math.max(96, Math.min(160, window.innerHeight * 0.2))
     let visibleSection = sectionOrder[0]
     for (const section of sectionOrder) {
       const element = document.getElementById(section)
@@ -713,7 +712,7 @@ function App() {
         break
       }
     }
-    if (main.scrollTop + main.clientHeight >= main.scrollHeight - 2) {
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
       visibleSection = sectionOrder[sectionOrder.length - 1]
     }
     setActiveSection((current) => current === visibleSection ? current : visibleSection)
@@ -760,7 +759,12 @@ function App() {
     }
     const onResize = () => syncActiveSection()
 
-    main.addEventListener('scrollend', releaseNavigation)
+    const onScroll = () => {
+      if (!navigationLockRef.current) syncActiveSection()
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('scrollend', releaseNavigation)
     window.addEventListener('resize', onResize)
     window.addEventListener('popstate', navigateFromLocation)
     window.addEventListener('hashchange', navigateFromLocation)
@@ -782,7 +786,8 @@ function App() {
     }
 
     return () => {
-      main.removeEventListener('scrollend', releaseNavigation)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('scrollend', releaseNavigation)
       window.removeEventListener('resize', onResize)
       window.removeEventListener('popstate', navigateFromLocation)
       window.removeEventListener('hashchange', navigateFromLocation)
@@ -1016,9 +1021,7 @@ function App() {
         </button>
       </aside>
 
-      <main className="main-content" onScroll={() => {
-        if (!navigationLockRef.current) syncActiveSection()
-      }} ref={mainContentRef}>
+      <main className="main-content" ref={mainContentRef}>
         <header className="topbar">
           <div>
             <p className="eyebrow">ROUTE PLANNING / {sectionNames[activeSection]?.toUpperCase() ?? 'ANALYTICS'}</p>
@@ -1091,7 +1094,7 @@ function App() {
             <span className="stat-icon teal">◇</span>
             <span className="stat-label">Candidate routes</span>
             <strong>{metadata?.route_count ?? 0}</strong>
-            <small>4 alternatives per shipment</small>
+            <small>Up to 4, where geography permits</small>
           </button>
           <button className="stat-card clickable-stat" onClick={() => { setShipmentFilter('feasible'); chooseSection('shipments') }} type="button">
             <span className="stat-icon green">✓</span>

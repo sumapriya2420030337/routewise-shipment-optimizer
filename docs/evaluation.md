@@ -7,15 +7,18 @@ The checked-in CSVs were generated with seed `2026`.
 | Measure | Observed |
 |---|---:|
 | Shipments | 30 |
-| Candidate routes | 120 |
-| Candidates per shipment | 4 |
+| Candidate routes | 68 |
+| Candidates per shipment | 1–4, depending on geographic feasibility |
 | Shipments with at least one computed-feasible route | 20 |
 | Shipments with no computed-feasible route | 10 |
-| Computed-feasible route records | 36 |
+| Computed-feasible route records | 24 |
 | Stored feasibility/scenario-label mismatch warnings | 0 |
 
-All records are synthetic. Shipment `scenario_class` describes whether its
-candidate set contains any route satisfying the shipment's limits.
+All records are synthetic. The generator creates only direct transport modes
+allowed by the offline origin–destination geography rules; it does not invent
+road or rail service across oceans or disconnected land networks. Shipment
+`scenario_class` describes whether its candidate set contains any route
+satisfying the shipment's limits.
 `routes.csv:is_feasible` is a generated audit field. The optimizer independently
 recomputes eligibility and only then compares the stored label.
 
@@ -43,7 +46,7 @@ recomputes eligibility and only then compares the stored label.
 |---|---|---|
 | `route_id` | Unique candidate key | Text |
 | `shipment_id` | Referenced shipment | Existing shipment ID |
-| `route_mode` | Synthetic transport mode | `air`, `ocean`, `rail`, `road` |
+| `route_mode` | Synthetic direct mode supported by the lane | `air`, `ocean`, `rail`, `road` |
 | `cost_usd` | Estimated route cost | USD, positive |
 | `transit_time_days` | Estimated duration | days, positive |
 | `delay_probability` | Candidate delay probability | unit interval `[0,1]` |
@@ -113,27 +116,26 @@ Values below are produced from the checked-in CSVs at report generation time.
 
 | Strategy | Selected | Feasibility rate | Constraint violations | Avg cost (USD) | Avg time (days) | Avg risk penalty | Avg balanced penalty |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Weighted optimizer | 20 | 66.67% | 0 | 17,111.63 | 19.25 | 0.397475 | 0.414555 |
-| Cheapest feasible | 20 | 66.67% | 0 | 14,874.19 | 20.34 | 0.425638 | 0.420191 |
-| Fastest feasible | 20 | 66.67% | 0 | 23,946.93 | 17.09 | 0.396181 | 0.449167 |
-| Reliability-oriented | 20 | 66.67% | 0 | 19,831.00 | 18.71 | 0.379493 | 0.437946 |
+| Weighted optimizer | 20 | 66.67% | 0 | 32,393.19 | 16.73 | 0.382401 | 0.439720 |
+| Cheapest feasible | 20 | 66.67% | 0 | 32,393.19 | 16.73 | 0.382401 | 0.439720 |
+| Fastest feasible | 20 | 66.67% | 0 | 33,043.46 | 16.05 | 0.373758 | 0.452127 |
+| Reliability-oriented | 20 | 66.67% | 0 | 33,371.38 | 16.28 | 0.368315 | 0.480494 |
 
 All strategies selected only routes meeting recomputed constraints. There were
 zero constraint violations and zero mismatches between stored labels and
-computed feasibility in this generated snapshot. The weighted strategy's
-average balanced penalty was `0.414555` versus `0.420191` for the cheapest
-strategy. The cheapest choice had lower average spend (`$14,874.19`) but longer
-average time (`20.34` days) and higher average risk penalty (`0.425638`) than
-the weighted choice. The fastest option averaged `17.09` days and
-`$23,946.93`; the reliability-oriented option averaged risk penalty `0.379493`
-at average cost `$19,831.00`. These are descriptive outcomes, not savings
-claims or evidence that a strategy is universally superior.
+computed feasibility in this generated snapshot. The weighted optimizer and
+cheapest baseline select the same routes for this dataset; this is observed,
+not imposed. The fastest option averaged `16.05` days at average cost
+`$33,043.46`; the reliability-oriented option had the lowest mean illustrative
+risk penalty (`0.368315`) at average cost `$33,371.38`. These are descriptive
+outcomes, not savings claims or evidence that a strategy is universally
+superior.
 
 ## Sensitivity and Pareto observations
 
 Comparing each named profile's selected route with balanced on the 20 feasible
-shipments, the cost-sensitive profile changes 2 selections, time-sensitive
-changes 7, and reliability-sensitive changes 3. This shows that route choice
+shipments, the cost-sensitive profile changes 0 selections, time-sensitive
+changes 3, and reliability-sensitive changes 2. This shows that route choice
 depends on the stated preferences for this dataset; it is not a prediction of
 operational stability under real conditions.
 
@@ -163,10 +165,10 @@ backend\.venv\Scripts\python.exe -m unittest discover -s tests -p "test_disrupti
 backend\.venv\Scripts\python.exe -m unittest discover -s tests -p "test_api.py" -v
 ```
 
-Across the 36 computed-feasible route records, 34 are non-dominated in their
+No strategy selects a route when all candidates violate at least one hard
+constraint. All 24 computed-feasible route records are non-dominated in their
 respective shipment groups. The average per-shipment frontier size among the
-20 feasible shipments is 1.7. No shipment has a selected route when all of its
-candidates violate at least one hard constraint.
+20 feasible shipments is 1.2.
 
 ## Reproduction and limitations
 

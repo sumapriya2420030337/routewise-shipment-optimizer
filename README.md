@@ -1,11 +1,11 @@
 # RouteWise — Explainable Shipment Route Optimizer
 
 RouteWise is a local full-stack logistics analytics demonstration. It compares
-four synthetic candidate routes per shipment, enforces hard cost, delivery-time,
-and risk limits, and explains the selected route using a deterministic weighted
-objective. The application includes a FastAPI backend, a React/TypeScript
-dashboard, sensitivity analysis, a measured baseline evaluation, and a
-hypothetical disruption simulator.
+up to four geographically supported synthetic candidate routes per shipment,
+enforces hard cost, delivery-time, and risk limits, and explains the selected
+route using a deterministic weighted objective. The application includes a
+FastAPI backend, a React/TypeScript dashboard, sensitivity analysis, a measured
+baseline evaluation, and a hypothetical disruption simulator.
 An optional AI Logistics Analyst can provide natural-language commentary on
 optimizer-computed facts; the core application remains fully functional without
 an AI provider or API key.
@@ -16,7 +16,8 @@ an AI provider or API key.
 
 ## Features
 
-- Fixed-seed generator for 30 shipments and 120 routes (four per shipment).
+- Fixed-seed generator for 30 shipments and geographically supported candidates
+  (one to four per shipment; 68 in the checked-in snapshot).
 - Independent feasibility checks for budget, deadline, delay, congestion, and
   geopolitical-risk caps. Stored CSV labels are audited, not trusted.
 - Four decision profiles and validated custom cost/time/risk weights.
@@ -134,8 +135,10 @@ backend\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
 The generator uses seed `2026` by default, producing 30 shipment records and
-exactly 120 route records. The checked-in results contain 20 shipments with at
-least one feasible route, 10 without any feasible option, and 36 feasible route
+68 geographically supported candidate route records in the checked-in snapshot.
+It emits one to four candidates per shipment rather than inventing unavailable
+transport modes. The current data contains 20 shipments with at least one
+feasible route, 10 without any feasible option, and 24 computed-feasible route
 records. Re-running the generator with the default seed reproduces the CSV
 contents; `--seed` and `--output-dir` allow explicit alternatives.
 
@@ -242,7 +245,7 @@ rank higher; route ID deterministically breaks exact displayed-score ties.
 Additional assumptions, tie-breaking, invalid-value behavior, and evaluation
 limitations are documented in [docs/evaluation.md](docs/evaluation.md).
 
-Reproduce measured comparisons and rebuild the PDF with:
+Reproduce measured comparisons and generate a verified PDF report with:
 
 ```powershell
 backend\.venv\Scripts\python.exe scripts\evaluate_optimizer.py
@@ -250,7 +253,9 @@ backend\.venv\Scripts\python.exe scripts\generate_technical_report.py
 ```
 
 See [docs/evaluation.md](docs/evaluation.md) for the measured results and
-[docs/technical-report.pdf](docs/technical-report.pdf) for the concise report.
+[docs/technical-report-verified.pdf](docs/technical-report-verified.pdf) for
+the concise report. The pre-existing `docs/technical-report.pdf` is preserved
+unchanged; it contains the earlier, superseded dataset snapshot.
 These descriptive synthetic-data comparisons do not establish a ground-truth
 optimal route, predictive accuracy, or business savings.
 
@@ -283,7 +288,7 @@ compilation.
 - [Architecture](docs/architecture.md)
 - [Evaluation method and actual results](docs/evaluation.md)
 - [Technical report (Markdown)](docs/technical-report.md)
-- [Technical report (PDF)](docs/technical-report.pdf)
+- [Verified technical report (PDF)](docs/technical-report-verified.pdf)
 
 For a demo screenshot, run both services, open the local frontend, select a
 shipment, and trigger optimization. Save the screenshot as a PNG in

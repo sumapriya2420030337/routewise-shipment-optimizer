@@ -559,7 +559,7 @@ describe('RouteWise dashboard', () => {
     expect(screen.queryByRole('dialog', { name: 'Create Shipment' })).not.toBeInTheDocument()
   })
 
-  it('updates the active navigation item as the main content scrolls in both directions', async () => {
+  it('updates the active navigation item as the document scrolls in both directions', async () => {
     render(<App />)
     await screen.findByRole('heading', { name: 'Shipment intelligence' })
     const main = document.querySelector('.main-content') as HTMLElement
@@ -570,13 +570,14 @@ describe('RouteWise dashboard', () => {
       'disruption-lab': 2200,
       evaluation: 2900,
     }
-    Object.defineProperty(main, 'clientHeight', { configurable: true, value: 600 })
-    Object.defineProperty(main, 'scrollHeight', { configurable: true, value: 3500 })
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 600 })
+    Object.defineProperty(document.documentElement, 'scrollHeight', { configurable: true, value: 3500 })
+    Object.defineProperty(document.documentElement, 'clientHeight', { configurable: true, value: 600 })
     const rectSpy = vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(function (this: Element) {
-      if (this === main) return new DOMRect(0, 0, 1000, 600)
+      if (this === main) return new DOMRect(0, -window.scrollY, 1000, 600)
       const sectionId = (this as HTMLElement).id
       if (sectionId in positions) {
-        return new DOMRect(0, positions[sectionId] - main.scrollTop, 1000, 300)
+        return new DOMRect(0, positions[sectionId] - window.scrollY, 1000, 300)
       }
       return new DOMRect(0, 0, 1000, 20)
     })
@@ -592,8 +593,8 @@ describe('RouteWise dashboard', () => {
       })
     }
     const scrollTo = async (top: number, section: string) => {
-      main.scrollTop = top
-      fireEvent.scroll(main)
+      Object.defineProperty(window, 'scrollY', { configurable: true, value: top })
+      fireEvent.scroll(window)
       await expectActive(section)
     }
 
@@ -627,6 +628,7 @@ describe('RouteWise dashboard', () => {
   it('renders chart axes and a recommended route tooltip from the selected shipment only', async () => {
     render(<App />)
     await screen.findByRole('heading', { name: 'R0002' })
+    expect(screen.getByText('Up to 4, where geography permits')).toBeInTheDocument()
     const chart = await screen.findByRole('img', { name: /Candidate routes for the selected shipment/ })
     expect(chart).toHaveTextContent('Cost (USD)')
     expect(chart).toHaveTextContent('Transit time (days)')

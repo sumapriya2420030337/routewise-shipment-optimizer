@@ -136,8 +136,11 @@
 
 .main-content {
   width: min(100% - 244px, 1536px);
+  min-height: 100vh;
+  min-height: 100dvh;
   margin-left: 244px;
   padding: 0 36px 25px;
+  overflow-x: clip;
 }
 
 .topbar {
@@ -2524,13 +2527,8 @@
 }
 
 .main-content {
-  height: 100vh;
-  height: 100dvh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
+  height: auto;
   transition: width .2s ease, margin-left .2s ease, padding .2s ease;
-  scroll-behavior: smooth;
 }
 
 .app-shell.sidebar-compact .sidebar {
@@ -2887,8 +2885,6 @@
   .main-content,
   .app-shell.sidebar-compact .main-content {
     width: 100%;
-    height: 100vh;
-    height: 100dvh;
     margin-left: 0;
     padding: 62px 18px 20px;
   }
@@ -2910,6 +2906,16 @@
 
   .scatter-legend {
     justify-content: flex-start;
+  }
+}
+
+@media (max-width: 860px) {
+  #overview,
+  #shipments,
+  #decision-lab,
+  #disruption-lab,
+  #evaluation {
+    scroll-margin-top: 70px;
   }
 }
 

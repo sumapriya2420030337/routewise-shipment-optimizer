@@ -32,7 +32,7 @@ class AnalystExplanationTests(unittest.TestCase):
         self.assertEqual(response.provider_status, "not_applicable")
         self.assertEqual(response.computed_facts.status, "no_feasible_route")
         self.assertIsNone(response.computed_facts.selected_route_id)
-        self.assertEqual(response.computed_facts.rejected_route_count, 4)
+        self.assertEqual(response.computed_facts.rejected_route_count, 2)
         self.assertIn("No candidate satisfies", response.narrative.summary)
 
     def test_groq_response_is_validated_and_only_adds_commentary(self) -> None:

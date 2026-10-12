@@ -7,14 +7,15 @@ Assignment prototype · measured against the included synthetic dataset
 
 Selecting a shipment route is a constrained multi-objective choice: cost,
 delivery time, and multiple sources of risk may conflict. RouteWise demonstrates
-a reproducible, explainable way to compare four candidate modes per shipment.
+a reproducible, explainable way to compare geographically supported candidate
+modes per shipment.
 It is a local decision-support prototype, not a carrier recommendation or a
 forecasting service. No machine-learning model is trained.
 
-The fixed-seed dataset contains 30 shipments and 120 route candidates. Twenty
-shipments have at least one candidate meeting their limits; ten have none.
-Thirty-six route records are computed feasible. The records, lane values, and
-risk metrics are synthetic.
+The fixed-seed dataset contains 30 shipments and 68 route candidates (one to
+four per shipment, depending on geography). Twenty shipments have at least one
+candidate meeting their limits; ten have none. Twenty-four route records are
+computed feasible. The records, lane values, and risk metrics are synthetic.
 
 ## Methodology
 
@@ -60,21 +61,21 @@ feasibility mismatches.
 
 | Strategy | Avg cost (USD) | Avg time (days) | Avg risk penalty | Avg balanced penalty |
 |---|---:|---:|---:|---:|
-| Weighted optimizer | 17,111.63 | 19.25 | 0.397475 | 0.414555 |
-| Cheapest feasible | 14,874.19 | 20.34 | 0.425638 | 0.420191 |
-| Fastest feasible | 23,946.93 | 17.09 | 0.396181 | 0.449167 |
-| Reliability-oriented | 19,831.00 | 18.71 | 0.379493 | 0.437946 |
+| Weighted optimizer | 32,393.19 | 16.73 | 0.382401 | 0.439720 |
+| Cheapest feasible | 32,393.19 | 16.73 | 0.382401 | 0.439720 |
+| Fastest feasible | 33,043.46 | 16.05 | 0.373758 | 0.452127 |
+| Reliability-oriented | 33,371.38 | 16.28 | 0.368315 | 0.480494 |
 
-The weighted choice has a lower measured balanced penalty than the cheapest
-baseline in this snapshot, while the cheapest choice spends less and averages
-longer transit time. The fastest and reliability-oriented strategies expose
-different time, cost, and risk trade-offs. These outcomes are descriptive and
-do not represent ground-truth optimality or realized savings.
+The weighted and cheapest strategies select the same route records in this
+dataset; that is an observed outcome, not a forced or hard-coded result. The
+fastest and reliability-oriented strategies expose different time, cost, and
+risk trade-offs. These outcomes are descriptive and do not represent
+ground-truth optimality or realized savings.
 
-Across the 20 feasible shipments, profile choices differ from balanced for 2
-cost-sensitive, 7 time-sensitive, and 3 reliability-sensitive choices.
-Per-shipment Pareto analysis found 34 non-dominated candidates out of 36
-computed-feasible candidates, averaging 1.7 frontier routes per feasible
+Across the 20 feasible shipments, profile choices differ from balanced for 0
+cost-sensitive, 3 time-sensitive, and 2 reliability-sensitive choices.
+Per-shipment Pareto analysis found 24 non-dominated candidates out of 24
+computed-feasible candidates, averaging 1.2 frontier routes per feasible
 shipment.
 
 ## Hypothetical disruption simulation

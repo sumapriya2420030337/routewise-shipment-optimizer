@@ -17,15 +17,15 @@ class RouteWiseApiTests(unittest.TestCase):
         response = self.client.get("/api/v1/health")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["shipment_count"], 30)
-        self.assertEqual(response.json()["route_count"], 120)
+        self.assertEqual(response.json()["route_count"], len(ROUTES))
 
     def test_metadata_has_measured_summary(self) -> None:
         response = self.client.get("/api/v1/metadata")
         self.assertEqual(response.status_code, 200)
         payload = response.json()
         self.assertTrue(payload["synthetic_data"])
-        self.assertEqual(payload["feasible_route_count"], 11)
-        self.assertEqual(payload["shipments_without_feasible_routes"], 19)
+        self.assertEqual(payload["feasible_route_count"], 24)
+        self.assertEqual(payload["shipments_without_feasible_routes"], 10)
         self.assertEqual(payload["evaluation"]["results"]["reliability_oriented"]["constraint_violations"], 0)
 
     def test_shipments_search_filter_and_pagination(self) -> None:
@@ -33,15 +33,16 @@ class RouteWiseApiTests(unittest.TestCase):
         self.assertEqual(len(self.client.get("/api/v1/shipments?search=hamburg").json()) > 0, True)
         no_feasible = self.client.get("/api/v1/shipments?status=no_feasible_route")
         self.assertEqual(no_feasible.status_code, 200)
-        self.assertEqual(len(no_feasible.json()), 19)
+        self.assertEqual(len(no_feasible.json()), 10)
 
     def test_shipment_detail_and_route_options(self) -> None:
         detail = self.client.get("/api/v1/shipments/S003")
         self.assertEqual(detail.status_code, 200)
-        self.assertEqual(detail.json()["candidate_route_count"], 4)
+        expected_route_count = sum(route["shipment_id"] == "S003" for route in ROUTES)
+        self.assertEqual(detail.json()["candidate_route_count"], expected_route_count)
         routes = self.client.get("/api/v1/shipments/S003/routes")
         self.assertEqual(routes.status_code, 200)
-        self.assertEqual(len(routes.json()["routes"]), 4)
+        self.assertEqual(len(routes.json()["routes"]), expected_route_count)
         self.assertTrue(any(row["is_feasible"] for row in routes.json()["routes"]))
 
     def test_unknown_shipment_returns_404(self) -> None:
@@ -284,7 +285,10 @@ class RouteWiseApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["status"], "no_feasible_route")
         self.assertIsNone(response.json()["recommendation"])
-        self.assertEqual(len(response.json()["rejected_routes"]), 4)
+        self.assertEqual(
+            len(response.json()["rejected_routes"]),
+            sum(route["shipment_id"] == "S005" for route in ROUTES),
+        )
 
     def test_sensitivity_analysis_returns_computed_recommendations(self) -> None:
         response = self.client.post(
@@ -323,20 +327,24 @@ class RouteWiseApiTests(unittest.TestCase):
             self.assertIn(endpoint, paths)
 
     def test_disruption_simulation_returns_baseline_and_hypothetical_scenarios(self) -> None:
+        shipment_routes = [
+            route for route in ROUTES if route["shipment_id"] == "S003"
+        ]
+        selected_route = shipment_routes[0]
         response = self.client.post(
             "/api/v1/simulate-disruption",
             json={
-                "shipment_id": "S001",
+                "shipment_id": "S003",
                 "scenarios": [
                     {
-                        "name": "rail closure",
+                        "name": "mode closure",
                         "cost_increase_pct": 0.25,
-                        "route_modes": ["rail"],
+                        "route_modes": [selected_route["route_mode"]],
                     },
                     {
                         "name": "target delay",
                         "delay_probability_increase": 0.2,
-                        "route_ids": ["R0001"],
+                        "route_ids": [selected_route["route_id"]],
                     },
                 ],
             },
@@ -344,10 +352,11 @@ class RouteWiseApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200, response.text)
         result = response.json()
         self.assertTrue(result["hypothetical"])
-        self.assertEqual(result["baseline"]["candidate_count"], 4)
+        expected_candidates = len(shipment_routes)
+        self.assertEqual(result["baseline"]["candidate_count"], expected_candidates)
         self.assertEqual(len(result["scenarios"]), 2)
         self.assertIn("affected_route_ids", result["scenarios"][0]["parameters"])
-        self.assertEqual(len(result["scenarios"][0]["routes"]), 4)
+        self.assertEqual(len(result["scenarios"][0]["routes"]), expected_candidates)
         self.assertIn("feasible_candidate_percentage", result["scenarios"][0]["comparison"])
 
     def test_disruption_simulation_applies_constraint_overrides(self) -> None:

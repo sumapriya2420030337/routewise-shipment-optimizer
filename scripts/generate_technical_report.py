@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from backend.app.services.evaluation import evaluate_dataset
 from backend.app.services.route_optimizer import load_dataset
 
-OUTPUT = Path(__file__).resolve().parents[1] / "docs" / "technical-report.pdf"
+OUTPUT = Path(__file__).resolve().parents[1] / "docs" / "technical-report-verified.pdf"
 INK = colors.HexColor("#17324D")
 MUTED = colors.HexColor("#52687D")
 TEAL = colors.HexColor("#087E8B")
@@ -231,7 +231,8 @@ def generate_report() -> Path:
     report.paragraph(
         "The fixed-seed synthetic dataset contains <b>30 shipments</b> and "
         f"<b>{len(routes)} candidate routes</b> "
-        f"(four per shipment). <b>{result['shipments_with_feasible_routes']}</b> "
+        "(one to four geographically supported candidates per shipment). "
+        f"<b>{result['shipments_with_feasible_routes']}</b> "
         "shipments have at least one route meeting all limits; "
         f"<b>{result['shipments_without_feasible_routes']}</b> have none. "
         f"There are <b>{result['pareto_frontier']['eligible_route_count']}</b> "
@@ -346,13 +347,11 @@ def generate_report() -> Path:
     )
     report.heading("Interpretation and limits")
     report.paragraph(
-        "In this snapshot, the weighted strategy's mean balanced penalty is "
-        f"{result['results']['weighted_optimizer']['average_total_penalty']:.6f}; "
-        "the cheapest baseline has lower mean spend but a higher mean balanced "
-        "penalty and longer mean transit time. The fastest baseline averages "
-        f"{result['results']['fastest_feasible']['average_transit_days']:.2f} days "
-        "at higher mean cost. The reliability-oriented baseline has the lowest "
-        "mean illustrative risk penalty. These are descriptive trade-offs, not "
+        "Strategy averages describe trade-offs on this synthetic snapshot. "
+        "Different selection rules can select the same routes when the data "
+        "supports that result; strategies are not forced to differ. The "
+        "fastest and reliability-oriented baselines may favor different "
+        "candidate attributes. These are descriptive measurements, not "
         "business outcomes."
     )
     report.paragraph(

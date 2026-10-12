@@ -36,6 +36,19 @@ class GenerateDatasetTests(unittest.TestCase):
         )
         validate_dataset(first_shipments, first_routes)
 
+    def test_default_seed_reproduces_the_checked_in_canonical_csvs(self) -> None:
+        shipments, routes = generate_dataset(DEFAULT_SEED)
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            generated_dir = Path(temporary_directory)
+            write_dataset(shipments, routes, generated_dir)
+            canonical_dir = Path(__file__).resolve().parents[1] / "data"
+            for filename in ("shipments.csv", "routes.csv"):
+                with self.subTest(filename=filename):
+                    self.assertEqual(
+                        (generated_dir / filename).read_bytes(),
+                        (canonical_dir / filename).read_bytes(),
+                    )
+
     def test_generation_preserves_scenario_classes_when_a_lane_has_few_modes(self) -> None:
         shipments, routes = generate_dataset()
         routes_by_shipment: dict[str, list[dict[str, object]]] = {}
